@@ -17,12 +17,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Configure AWS Credentials
-      - uses: aws-actions/configure-aws-credentials@master
+        uses: aws-actions/configure-aws-credentials@master
         with:
           role-to-assume: ${{ env.AWS_ROLE_ARN }}
           role-session-name: deploy-role-session
           aws-region: ${{ env.AWS_REGION }}
-      - run: aws sts get-caller-identity
+        run: aws sts get-caller-identity
       - name: Deploy to AWS CloudFormation
         uses: aws-actions/aws-cloudformation-github-deploy@master
         with:

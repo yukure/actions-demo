@@ -23,6 +23,9 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
       - name: Get Caller Identity
         run: aws sts get-caller-identity
+  ls-pwd:
+    - run: ls -la
+    - run: pwd
   deploy:
     needs: [build]
     runs-on: ubuntu-latest

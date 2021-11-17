@@ -22,6 +22,7 @@ jobs:
           role-to-assume: ${{ env.AWS_ROLE_ARN }}
           role-session-name: deploy-role-session
           aws-region: ${{ env.AWS_REGION }}
+      - name: Get Caller Identity
         run: aws sts get-caller-identity
       - name: Deploy to AWS CloudFormation
         uses: aws-actions/aws-cloudformation-github-deploy@master

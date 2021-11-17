@@ -10,9 +10,12 @@ permissions:
   id-token: write
   contents: read
 jobs:
-  build:
+  deploy:
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@master
         with:
@@ -21,12 +24,6 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
       - name: Get Caller Identity
         run: aws sts get-caller-identity
-  deploy:
-    needs: [build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
       - name: Deploy to AWS CloudFormation
         uses: aws-actions/aws-cloudformation-github-deploy@v1
         with:

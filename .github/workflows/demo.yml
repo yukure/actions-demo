@@ -24,8 +24,11 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
       - name: Get Caller Identity
         run: aws sts get-caller-identity
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy to AWS CloudFormation
-        uses: aws-actions/aws-cloudformation-github-deploy@master
-        with:
-          name: DemoStack
-          template: demo.yaml
+          uses: aws-actions/aws-cloudformation-github-deploy@master
+          with:
+            name: DemoStack
+            template: demo.yaml

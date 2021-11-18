@@ -25,7 +25,7 @@ jobs:
           aws cloudformation create-change-set \
             --stack-name ProductionStack \
             --change-set-name production-stack-dry-run \
-            --template-body file:/$GITHUB_WORKSPACE/production.yml
+            --template-body file://production.yml
           aws cloudformation describe-change-set \
             --stack-name ProductionStack \
             --change-set-name production-stack-dry-run
@@ -34,7 +34,7 @@ jobs:
           aws cloudformation create-change-set \
             --stack-name StagingStack \
             --change-set-name staging-stack-dry-run \
-            --template-body file:/$GITHUB_WORKSPACE/staging.yml
+            --template-body file://staging.yml
           aws cloudformation describe-change-set \
             --stack-name StagingStack \
             --change-set-name staging-stack-dry-run

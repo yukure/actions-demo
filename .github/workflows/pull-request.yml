@@ -37,6 +37,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const json = require('./production.json')
+            console.log(json)
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
@@ -71,6 +72,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const json = require('./staging.json')
+            console.log(json)
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,

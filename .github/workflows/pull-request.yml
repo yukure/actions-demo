@@ -9,7 +9,7 @@ permissions:
   issues: write
   pull-requests: write
 jobs:
-  generate-chage-set:
+  generate-chage-set-production:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -31,28 +31,6 @@ jobs:
           aws cloudformation describe-change-set \
             --stack-name ProductionStack \
             --change-set-name production-stack-dry-run >> production.json
-      - name: Dry Run Staging
-        run: |
-          aws cloudformation create-change-set \
-            --stack-name StagingStack \
-            --change-set-name staging-stack-dry-run \
-            --template-body file://staging.yml
-          aws cloudformation describe-change-set \
-            --stack-name StagingStack \
-            --change-set-name staging-stack-dry-run >> staging.json
-      - name: Upload Production Change Set
-        uses: actions/upload-artifact@v2
-        with:
-          name: production-change-set
-          path: production.json
-      - name: Upload Staging Change Set
-        uses: actions/upload-artifact@v2
-        with:
-          name: staging-change-set
-          path: staging.json
-  comment-chage-set:
-    runs-on: ubuntu-latest
-    steps:
       - name: comment
         uses: actions/github-script@v5
         with:
@@ -62,5 +40,38 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: ":ta-da"
+              body: production.json
+            })
+  generate-chage-set-staging:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          role-session-name: deploy-role-session
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Get Caller Identity
+        run: aws sts get-caller-identity
+      - name: Dry Run Staging
+        run: |
+          aws cloudformation create-change-set \
+            --stack-name StagingStack \
+            --change-set-name staging-stack-dry-run \
+            --template-body file://staging.yml
+          aws cloudformation describe-change-set \
+            --stack-name StagingStack \
+            --change-set-name staging-stack-dry-run >> staging.json
+      - name: comment
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: staging.json
             })

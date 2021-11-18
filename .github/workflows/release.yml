@@ -28,3 +28,4 @@ jobs:
         with:
           name: ProductionStack
           template: production.yml
+          no-fail-on-empty-changeset: "1"

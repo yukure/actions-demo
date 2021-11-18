@@ -7,7 +7,7 @@ permissions:
   id-token: write
   contents: read
 jobs:
-  deploy:
+  generate-chage-set:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -48,3 +48,17 @@ jobs:
         with:
           name: staging-change-set
           path: staging.json
+  comment-chage-set:
+    runs-on: ubuntu-latest
+    steps:
+      - name: comment
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: ":ta-da"
+            })

@@ -36,12 +36,11 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const fs = require('fs')
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: fs.readFileSync('production.json')
+              body: require('production.json')
             })
   generate-chage-set-staging:
     runs-on: ubuntu-latest
@@ -75,5 +74,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: fs.readFileSync('staging.json')
+              body: require('staging.json')
             })

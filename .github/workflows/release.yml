@@ -1,6 +1,8 @@
 name: main branch workflow
 on:
-  push: tags
+  push:
+    tags:
+      - 'v*'
 env:
   AWS_ROLE_ARN: arn:aws:iam::608092561803:role/yukure-admin-for-github-actions
   AWS_REGION: ap-northeast-1

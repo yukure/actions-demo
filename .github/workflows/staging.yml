@@ -28,3 +28,4 @@ jobs:
         with:
           name: StagingStack
           template: staging.yml
+          no-fail-on-empty-changeset: "1"

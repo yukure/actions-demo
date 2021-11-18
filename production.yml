@@ -3,7 +3,7 @@ Resources:
   FondeskVoiceMessageStaging:
     Type: "AWS::S3::Bucket"
     Properties:
-      BucketName: "yukure-demo-bucket"
+      BucketName: "yukure-production-bucket"
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:

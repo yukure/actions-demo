@@ -6,6 +6,7 @@ env:
 permissions:
   id-token: write
   contents: read
+  issues: write
 jobs:
   generate-chage-set:
     runs-on: ubuntu-latest

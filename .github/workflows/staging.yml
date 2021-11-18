@@ -1,0 +1,30 @@
+name: main branch workflow
+on:
+  push:
+    branches:
+      - main
+env:
+  AWS_ROLE_ARN: arn:aws:iam::608092561803:role/yukure-admin-for-github-actions
+  AWS_REGION: ap-northeast-1
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          role-session-name: deploy-role-session
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Get Caller Identity
+        run: aws sts get-caller-identity
+      - name: Deploy to AWS CloudFormation
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: StagingStack
+          template: staging.yml

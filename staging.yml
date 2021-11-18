@@ -1,0 +1,13 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Resources:
+  FondeskVoiceMessageStaging:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: "yukure-staging-bucket"
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: "AES256"
+            BucketKeyEnabled: false
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain

@@ -10,9 +10,9 @@ Resources:
               SSEAlgorithm: "AES256"
             BucketKeyEnabled: false
       PublicAccessBlockConfiguration:
-        BlockPublicAcls: true
+        BlockPublicAcls: false
         BlockPublicPolicy: true
-        IgnorePublicAcls: true
+        IgnorePublicAcls: false
         RestrictPublicBuckets: true
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain

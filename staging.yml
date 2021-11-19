@@ -9,6 +9,5 @@ Resources:
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: "AES256"
             BucketKeyEnabled: false
-      AccessControl: PublicReadWrite
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain

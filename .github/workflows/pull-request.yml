@@ -32,6 +32,7 @@ jobs:
             --stack-name ProductionStack \
             --change-set-name production-stack-dry-run >> production.json
           aws cloudformation delete-change-set \
+            --stack-name ProductionStack \
             --change-set-name production-stack-dry-run
       - name: comment
         uses: actions/github-script@v5
@@ -69,6 +70,7 @@ jobs:
             --stack-name StagingStack \
             --change-set-name staging-stack-dry-run >> staging.json
           aws cloudformation delete-change-set \
+            --stack-name StagingStack \
             --change-set-name staging-stack-dry-run
       - name: comment
         uses: actions/github-script@v5

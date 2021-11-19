@@ -3,6 +3,8 @@ on: pull_request
 env:
   AWS_ROLE_ARN: arn:aws:iam::608092561803:role/yukure-admin-for-github-actions
   AWS_REGION: ap-northeast-1
+  CHANGE_SET_PROD: change-set-production
+  CHANGE_SET_STG: change-set-staging
 permissions:
   id-token: write
   contents: read
@@ -24,18 +26,17 @@ jobs:
         run: |
           aws cloudformation create-change-set \
             --stack-name ProductionStack \
-            --change-set-name production-stack-dry-run \
+            --change-set-name ${{ env.CHANGE_SET_PROD }} \
             --template-body file://production.yml
           aws cloudformation describe-change-set \
             --stack-name ProductionStack \
-            --change-set-name production-stack-dry-run >> production.json
+            --change-set-name ${{ env.CHANGE_SET_PROD }} >> production.json
       - name: comment
         uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const json = require('./production.json')
-            console.log(json)
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
@@ -56,7 +57,7 @@ jobs:
         run: |
           aws cloudformation delete-change-set \
             --stack-name ProductionStack \
-            --change-set-name production-stack-dry-run
+            --change-set-name ${{ env.CHANGE_SET_PROD }}
   generate-chage-set-staging:
     runs-on: ubuntu-latest
     steps:
@@ -72,18 +73,17 @@ jobs:
         run: |
           aws cloudformation create-change-set \
             --stack-name StagingStack \
-            --change-set-name staging-stack-dry-run \
+            --change-set-name ${{ env.CHANGE_SET_STG }} \
             --template-body file://staging.yml
           aws cloudformation describe-change-set \
             --stack-name StagingStack \
-            --change-set-name staging-stack-dry-run >> staging.json
+            --change-set-name ${{ env.CHANGE_SET_STG }} >> staging.json
       - name: comment
         uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const json = require('./staging.json')
-            console.log(json)
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
@@ -104,4 +104,4 @@ jobs:
         run: |
           aws cloudformation delete-change-set \
             --stack-name StagingStack \
-            --change-set-name staging-stack-dry-run
+            --change-set-name ${{ env.CHANGE_SET_STG }}

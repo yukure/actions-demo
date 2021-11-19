@@ -20,8 +20,6 @@ jobs:
           role-to-assume: ${{ env.AWS_ROLE_ARN }}
           role-session-name: deploy-role-session
           aws-region: ${{ env.AWS_REGION }}
-      - name: Get Caller Identity
-        run: aws sts get-caller-identity
       - name: Dry Run Production
         run: |
           aws cloudformation create-change-set \
@@ -48,6 +46,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: generate-chage-set-production
     steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          role-session-name: deploy-role-session
+          aws-region: ${{ env.AWS_REGION }}
       - name: Delete Change Set
         run: |
           aws cloudformation delete-change-set \
@@ -64,8 +68,6 @@ jobs:
           role-to-assume: ${{ env.AWS_ROLE_ARN }}
           role-session-name: deploy-role-session
           aws-region: ${{ env.AWS_REGION }}
-      - name: Get Caller Identity
-        run: aws sts get-caller-identity
       - name: Dry Run Staging
         run: |
           aws cloudformation create-change-set \
@@ -92,6 +94,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: generate-chage-set-staging
     steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          role-session-name: deploy-role-session
+          aws-region: ${{ env.AWS_REGION }}
       - name: Delete Change Set
         run: |
           aws cloudformation delete-change-set \

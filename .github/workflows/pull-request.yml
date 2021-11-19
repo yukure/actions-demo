@@ -31,9 +31,6 @@ jobs:
           aws cloudformation describe-change-set \
             --stack-name ProductionStack \
             --change-set-name production-stack-dry-run >> production.json
-          aws cloudformation delete-change-set \
-            --stack-name ProductionStack \
-            --change-set-name production-stack-dry-run
       - name: comment
         uses: actions/github-script@v5
         with:
@@ -47,6 +44,11 @@ jobs:
               repo: context.repo.repo,
               body: "```json\n" + JSON.stringify(json, null , "\t") + "\n```"
             })
+      - name: Delete Change Set
+        run: |
+          aws cloudformation delete-change-set \
+            --stack-name ProductionStack \
+            --change-set-name production-stack-dry-run
   generate-chage-set-staging:
     runs-on: ubuntu-latest
     steps:
@@ -69,9 +71,6 @@ jobs:
           aws cloudformation describe-change-set \
             --stack-name StagingStack \
             --change-set-name staging-stack-dry-run >> staging.json
-          aws cloudformation delete-change-set \
-            --stack-name StagingStack \
-            --change-set-name staging-stack-dry-run
       - name: comment
         uses: actions/github-script@v5
         with:
@@ -85,3 +84,8 @@ jobs:
               repo: context.repo.repo,
               body: "```json\n" + JSON.stringify(json, null , "\t") + "\n```"
             })
+      - name: Delete Change Set
+        run: |
+          aws cloudformation delete-change-set \
+            --stack-name StagingStack \
+            --change-set-name staging-stack-dry-run

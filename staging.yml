@@ -11,8 +11,8 @@ Resources:
             BucketKeyEnabled: false
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
-        BlockPublicPolicy: true
+        BlockPublicPolicy: false
         IgnorePublicAcls: true
-        RestrictPublicBuckets: true
+        RestrictPublicBuckets: false
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain

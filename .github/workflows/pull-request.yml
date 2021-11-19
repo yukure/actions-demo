@@ -44,6 +44,10 @@ jobs:
               repo: context.repo.repo,
               body: "```json\n" + JSON.stringify(json, null , "\t") + "\n```"
             })
+  delete-change-set-production:
+    runs-on: ubuntu-latest
+    needs: generate-chage-set-production
+    steps:
       - name: Delete Change Set
         run: |
           aws cloudformation delete-change-set \
@@ -84,6 +88,10 @@ jobs:
               repo: context.repo.repo,
               body: "```json\n" + JSON.stringify(json, null , "\t") + "\n```"
             })
+  delete-change-set-staging:
+    runs-on: ubuntu-latest
+    needs: generate-chage-set-staging
+    steps:
       - name: Delete Change Set
         run: |
           aws cloudformation delete-change-set \

@@ -3,10 +3,10 @@ on: pull_request
 env:
   AWS_ROLE_ARN: arn:aws:iam::608092561803:role/yukure-admin-for-github-actions
   AWS_REGION: ap-northeast-1
-  CHANGE_SET_PROD: "change-set-production-$GITHUB_REF_NAME"
+  CHANGE_SET_PROD: change-set-production-${ GITHUB_REF_NAME }
   CFN_STACK_PROD: ProductionStack
   CHANGE_SET_STG: change-set-staging
-  CFN_STACK_STG: "StagingStack-$GITHUB_REF_NAME"
+  CFN_STACK_STG: StagingStack-${ GITHUB_REF_NAME }
 permissions:
   id-token: write
   contents: read

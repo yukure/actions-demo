@@ -50,6 +50,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            console.log(${{ env.GITHUB_REF_NAME }})
             const json = require('./production.json')
             github.rest.issues.createComment({
               issue_number: context.issue.number,

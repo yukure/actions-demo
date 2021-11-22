@@ -28,7 +28,7 @@ jobs:
         run: |
           aws cloudformation create-change-set \
             --stack-name ${{ env.CFN_STACK_PROD }} \
-            --change-set-name ${{ env.CHANGE_SET_PROD }}-$GITHUB_REF_NAME \
+            --change-set-name ${{ env.CHANGE_SET_PROD }}-${{ env.GITHUB_REF_NAME }} \
             --template-body file://production.yml
   comment-change-set-production:
     runs-on: ubuntu-latest
@@ -88,7 +88,7 @@ jobs:
         run: |
           aws cloudformation create-change-set \
             --stack-name ${{ env.CFN_STACK_STG }} \
-            --change-set-name ${{ env.CHANGE_SET_STG }}-$GITHUB_REF_NAME \
+            --change-set-name ${{ env.CHANGE_SET_STG }}-${{ env.GITHUB_REF_NAME }} \
             --template-body file://staging.yml
   comment-change-set-staging:
     runs-on: ubuntu-latest

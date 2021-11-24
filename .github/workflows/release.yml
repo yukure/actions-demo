@@ -1,4 +1,4 @@
-name: main branch workflow
+name: Release Workflow
 on:
   push:
     tags:
@@ -10,8 +10,28 @@ permissions:
   id-token: write
   contents: read
 jobs:
-  deploy:
+  deploy-staging:
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          role-session-name: deploy-role-session
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Get Caller Identity
+        run: aws sts get-caller-identity
+      - name: Deploy to AWS CloudFormation
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: StagingStack
+          template: staging.yml
+          no-fail-on-empty-changeset: "1"
+  deploy-production:
+    runs-on: ubuntu-latest
+    needs: deploy-staging
     steps:
       - name: Checkout
         uses: actions/checkout@v2

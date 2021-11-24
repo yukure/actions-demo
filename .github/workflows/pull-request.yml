@@ -28,9 +28,8 @@ jobs:
         run: |
           aws cloudformation create-change-set \
             --stack-name ${{ env.CFN_STACK_PROD }} \
-            --change-set-name ${{ env.CHANGE_SET_PROD }} \
+            --change-set-name ${{ env.CHANGE_SET_PROD }}-${{ github.event.number }} \
             --template-body file://production.yml
-      - run: echo ${{ github.event.number }}
   comment-change-set-production:
     runs-on: ubuntu-latest
     needs: create-chage-set-production

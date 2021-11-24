@@ -9,5 +9,10 @@ Resources:
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: "AES256"
             BucketKeyEnabled: false
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: false
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: false
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain

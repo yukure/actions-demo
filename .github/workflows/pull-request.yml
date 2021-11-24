@@ -30,7 +30,7 @@ jobs:
             --stack-name ${{ env.CFN_STACK_PROD }} \
             --change-set-name ${{ env.CHANGE_SET_PROD }} \
             --template-body file://production.yml
-      - run: echo ${{ github.event }}
+      - run: echo ${{ toJSON(github.event) }}
   comment-change-set-production:
     runs-on: ubuntu-latest
     needs: create-chage-set-production

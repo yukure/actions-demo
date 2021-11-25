@@ -74,12 +74,11 @@ jobs:
             --stack-name ${{ env.CFN_STACK_PROD }} \
             --change-set-name ${{ env.CHANGE_SET_PROD }}-${{ github.event.number }}
       - name: slack-send
-        id: slack
         uses: slackapi/slack-github-action@v1.16.0
         with:
           payload: "{\"text\":\":candy: はい、アメちゃん！\"}"
         env:
-          SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
   create-chage-set-staging:

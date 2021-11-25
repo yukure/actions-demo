@@ -7,7 +7,7 @@ env:
   CFN_STACK_PROD: ProductionStack
   CHANGE_SET_STG: change-set-staging
   CFN_STACK_STG: StagingStack
-  SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
+  SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
 permissions:
   id-token: write
   contents: read

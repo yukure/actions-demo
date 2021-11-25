@@ -7,6 +7,7 @@ env:
   CFN_STACK_PROD: ProductionStack
   CHANGE_SET_STG: change-set-staging
   CFN_STACK_STG: StagingStack
+  SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
 permissions:
   id-token: write
   contents: read
@@ -72,6 +73,10 @@ jobs:
           aws cloudformation delete-change-set \
             --stack-name ${{ env.CFN_STACK_PROD }} \
             --change-set-name ${{ env.CHANGE_SET_PROD }}-${{ github.event.number }}
+      - name: slack-send
+        uses: slackapi/slack-github-action@v1.16.0
+        env:
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
 
   create-chage-set-staging:
     runs-on: ubuntu-latest

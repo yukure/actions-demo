@@ -6,6 +6,7 @@ on:
 env:
   AWS_ROLE_ARN: arn:aws:iam::608092561803:role/yukure-admin-for-github-actions
   AWS_REGION: ap-northeast-1
+  SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
 permissions:
   id-token: write
   contents: read
@@ -30,6 +31,10 @@ jobs:
           name: StagingStack
           template: staging.yml
           no-fail-on-empty-changeset: "1"
+      - name: slack-send
+        uses: slackapi/slack-github-action@v1.16.0
+        env:
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
   deploy-production:
     runs-on: ubuntu-latest
     environment: prodaction

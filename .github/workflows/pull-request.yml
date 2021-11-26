@@ -72,6 +72,13 @@ jobs:
           aws cloudformation delete-change-set \
             --stack-name ${{ env.CFN_STACK_PROD }} \
             --change-set-name ${{ env.CHANGE_SET_PROD }}-${{ github.event.number }}
+      - name: slack-send
+        uses: slackapi/slack-github-action@v1.16.0
+        with:
+          payload: "{\"blocks\":[{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"You have a new request: \"}},{\"type\":\"section\",\"fields\":[{\"type\":\"mrkdwn\",\"text\":\"*Type:* Computer (laptop)\"},{\"type\":\"mrkdwn\",\"text\":\"*When:* Submitted Aut 10\"}]}]}"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
   create-chage-set-staging:
     runs-on: ubuntu-latest

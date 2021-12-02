@@ -1,21 +1,19 @@
 version: 2.1
 
-# orbs: 
-#   terraform: circleci/terraform@3.0.0
+orbs: 
+  terraform: aws-cli/aws-cli@2.0.6
 
 workflows:
   build-workflow:
     jobs:
       - build
-    
-jobs:
-  build:
-    docker:
-      - image: alpine:3.7
-    steps:
-      - run:
-          name: The First Step
-          command: |
-            echo 'Hello World!'
-            echo 'This is the delivery pipeline'
 
+jobs:
+  aws-cli-example:
+    executor: aws-cli/default
+    steps:
+      - checkout
+      - aws-cli/setup:
+      - run:
+          command: |
+            aws --version

@@ -1,0 +1,21 @@
+version: 2.1
+
+# orbs: 
+#   terraform: circleci/terraform@3.0.0
+
+workflows:
+  build-workflow:
+    jobs:
+      - build
+    
+jobs:
+  build:
+    docker:
+      - image: alpine:3.7
+    step:
+      - run:
+          name: The First Step
+          command: |
+            echo 'Hello World!'
+            echo 'This is the delivery pipeline'
+

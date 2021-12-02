@@ -6,7 +6,7 @@ orbs:
 workflows:
   build-workflow:
     jobs:
-      - build
+      - aws-cli-example
 
 jobs:
   aws-cli-example:

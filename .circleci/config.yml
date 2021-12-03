@@ -11,7 +11,7 @@ workflows:
   pull-request-workflow:
     jobs:
       - create-change-set-production
-      - delete-change-set-production
+      - delete-change-set-production:
           requires:
             - create-change-set-production
 

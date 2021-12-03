@@ -3,7 +3,7 @@ version: 2.1
 orbs: 
   aws-cli: circleci/aws-cli@2.0.6
 
-env_var:
+env_var: &env_var
   CFN_STACK_PROD: ProductionStack
   CHANGE_SET_PROD: change-set-production
 
@@ -15,6 +15,7 @@ workflows:
 jobs:
   create-change-set:
     executor: aws-cli/default
+    environment: *env_var
     steps:
       - checkout
       - aws-cli/setup

@@ -21,7 +21,7 @@ jobs:
       - run:
           name: Create Change Set
           command: |
-            echo $CIRCLE_PR_NUMBER
+            echo ${CIRCLE_PR_NUMBER}
           # command: |
           #   aws cloudformation create-change-set \
           #     --stack-name ${CFN_STACK_PROD} \

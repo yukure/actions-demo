@@ -10,7 +10,7 @@ env_var: &env_var
 workflows:
   pull-request-workflow:
     jobs:
-      - create-change-set
+      - create-change-set-production
       - delete-change-set-production
 
 jobs:

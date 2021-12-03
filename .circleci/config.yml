@@ -45,7 +45,7 @@ jobs:
             aws cloudformation describe-change-set \
             --stack-name ${CFN_STACK_PROD} \
             --change-set-name ${CHANGE_SET_PROD}-${CIRCLE_BRANCH} >> $ChangeSetProd
-      - github-cli
+      - github-cli/setup
       - run:
           name: Create Comment to Pull Request
           command: |

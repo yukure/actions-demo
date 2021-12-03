@@ -2,6 +2,7 @@ version: 2.1
 
 orbs: 
   aws-cli: circleci/aws-cli@2.0.6
+  github-cli: circleci/github-cli@1.0.5
 
 env_var: &env_var
   CFN_STACK_PROD: ProductionStack
@@ -43,7 +44,12 @@ jobs:
           command: |
             aws cloudformation describe-change-set \
             --stack-name ${CFN_STACK_PROD} \
-            --change-set-name ${CHANGE_SET_PROD}-${CIRCLE_BRANCH} >> production.json
+            --change-set-name ${CHANGE_SET_PROD}-${CIRCLE_BRANCH} >> $ChangeSetProd
+      - github-cli
+      - run:
+          name: Create Comment to Pull Request
+          command: |
+            gh pr comment ${CIRCLE_PR_NUMBER} -b "```json${ChangeSetProd}```"
   delete-change-set-production:
     executor: aws-cli/default
     environment: *env_var

@@ -44,12 +44,12 @@ jobs:
           command: |
             aws cloudformation describe-change-set \
             --stack-name ${CFN_STACK_PROD} \
-            --change-set-name ${CHANGE_SET_PROD}-${CIRCLE_BRANCH} >> $ChangeSetProd
+            --change-set-name ${CHANGE_SET_PROD}-${CIRCLE_BRANCH} >> $CHANGE_SET_PROD
       - github-cli/setup
       - run:
           name: Create Comment to Pull Request
           command: |
-            gh pr comment ${CIRCLE_PR_NUMBER} -b "```json${ChangeSetProd}```"
+            gh pr comment ${CIRCLE_PR_NUMBER} -b "```json${CHANGE_SET_PROD}```"
   delete-change-set-production:
     executor: aws-cli/default
     environment: *env_var

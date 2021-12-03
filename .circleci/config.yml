@@ -11,9 +11,10 @@ workflows:
   pull-request-workflow:
     jobs:
       - create-change-set
+      - delete-change-set-production
 
 jobs:
-  create-change-set:
+  create-change-set-production:
     executor: aws-cli/default
     environment: *env_var
     steps:
@@ -26,10 +27,15 @@ jobs:
               --stack-name ${CFN_STACK_PROD} \
               --change-set-name ${CHANGE_SET_PROD}-${CIRCLE_BRANCH} \
               --template-body file://production.yml
-  # aws-cli-setup:
-  #   executor: aws-cli/default
-  #   steps:
-  #     - aws-cli/setup
-  #     - run:
-  #         command: |
-  #           aws --version
+  delete-change-set-production:
+    executor: aws-cli/default
+    environment: *env_var
+    steps:
+      - checkout
+      - aws-cli/setup
+      - run:
+          name: Create Change Set
+          command: |
+            aws cloudformation delete-change-set \
+            --stack-name ${CFN_STACK_PROD} \
+            --change-set-name ${CHANGE_SET_PROD}-${CIRCLE_BRANCH}

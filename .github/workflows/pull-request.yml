@@ -1,4 +1,4 @@
-name: pull request workflow
+name: Pull Request workflow
 on: pull_request
 env:
   AWS_ROLE_ARN: arn:aws:iam::608092561803:role/yukure-admin-for-github-actions
@@ -41,10 +41,12 @@ jobs:
           role-session-name: deploy-role-session
           aws-region: ${{ env.AWS_REGION }}
       - name: Describe change set
+        env:
+          PR_NUMBER: ${{ github.event.number }}
         run: |
           aws cloudformation describe-change-set \
             --stack-name ${{ env.CFN_STACK_PROD }} \
-            --change-set-name ${{ env.CHANGE_SET_PROD }}-${{ github.event.number }} >> production.json
+            --change-set-name ${{ env.CHANGE_SET_PROD }}-$PR_NUMBER >> production.json
       - name: comment
         uses: actions/github-script@v5
         with:
@@ -68,10 +70,12 @@ jobs:
           role-session-name: deploy-role-session
           aws-region: ${{ env.AWS_REGION }}
       - name: Delete Change Set
+        env:
+          PR_NUMBER: ${{ github.event.number }}
         run: |
           aws cloudformation delete-change-set \
             --stack-name ${{ env.CFN_STACK_PROD }} \
-            --change-set-name ${{ env.CHANGE_SET_PROD }}-${{ github.event.number }}
+            --change-set-name ${{ env.CHANGE_SET_PROD }}-$PR_NUMBER
       - name: slack-send
         uses: slackapi/slack-github-action@v1.16.0
         with:
@@ -92,10 +96,12 @@ jobs:
           role-session-name: deploy-role-session
           aws-region: ${{ env.AWS_REGION }}
       - name: Create Change Set
+        env:
+          PR_NUMBER: ${{ github.event.number }}
         run: |
           aws cloudformation create-change-set \
             --stack-name ${{ env.CFN_STACK_STG }} \
-            --change-set-name ${{ env.CHANGE_SET_STG }}-${{ github.event.number }} \
+            --change-set-name ${{ env.CHANGE_SET_STG }}-$PR_NUMBER \
             --template-body file://staging.yml
   comment-change-set-staging:
     runs-on: ubuntu-latest
@@ -108,10 +114,12 @@ jobs:
           role-session-name: deploy-role-session
           aws-region: ${{ env.AWS_REGION }}
       - name: Describe Change Set
+        env:
+          PR_NUMBER: ${{ github.event.number }}
         run: |
           aws cloudformation describe-change-set \
             --stack-name ${{ env.CFN_STACK_STG }} \
-            --change-set-name ${{ env.CHANGE_SET_STG }}-${{ github.event.number }} >> staging.json
+            --change-set-name ${{ env.CHANGE_SET_STG }}-$PR_NUMBER >> staging.json
       - name: comment
         uses: actions/github-script@v5
         with:
@@ -135,7 +143,9 @@ jobs:
           role-session-name: deploy-role-session
           aws-region: ${{ env.AWS_REGION }}
       - name: Delete Change Set
+        env:
+          PR_NUMBER: ${{ github.event.number }}
         run: |
           aws cloudformation delete-change-set \
             --stack-name ${{ env.CFN_STACK_STG }} \
-            --change-set-name ${{ env.CHANGE_SET_STG }}-${{ github.event.number }}
+            --change-set-name ${{ env.CHANGE_SET_STG }}-$PR_NUMBER

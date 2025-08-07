@@ -1,0 +1,38 @@
+name: Create Release Note
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  create_release_note:
+    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          ref: main
+      - name: Generate Version and Title
+        id: generate_version
+        run: |
+          VERSION=$(TZ=Asia/Tokyo date "+%Y%m%d%H%M")
+          TITLE=$(TZ=Asia/Tokyo date "+%Y-%m-%d_%H:%M")
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "title=${TITLE}" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_DEBUG: api
+      - name: Create Tag
+        run: |
+          git tag ${{ steps.generate_version.outputs.version }}
+          git push origin ${{ steps.generate_version.outputs.version }}
+      - name: Create Release Note🚀
+        run: |
+          gh release create ${{ steps.generate_version.outputs.version }} --target master --generate-notes -t "${{ steps.generate_version.outputs.title }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_DEBUG: api

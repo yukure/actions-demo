@@ -32,7 +32,7 @@ jobs:
           git push origin ${{ steps.generate_version.outputs.version }}
       - name: Create Release Note🚀
         run: |
-          gh release create ${{ steps.generate_version.outputs.version }} --target master --generate-notes -t "${{ steps.generate_version.outputs.title }}"
+          gh release create ${{ steps.generate_version.outputs.version }} --target main --generate-notes -t "${{ steps.generate_version.outputs.title }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_DEBUG: api
